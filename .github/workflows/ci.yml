@@ -33,7 +33,7 @@ jobs:
         if: github.repository == 'hannahherbig/react-volforce' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4.0.0
         with:
-          personal_token: ${{ secrets.GH_PAGES_DEPLOY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           force_orphan: true
           publish_branch: gh-pages
           publish_dir: ./dist
