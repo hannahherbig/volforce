@@ -104,7 +104,7 @@ function App() {
             <th className="text-center">
               <input type="checkbox" onChange={toggleEdit} checked={edit} />
               {edit ? " " : ""}
-              {edit ? <span onClick={toggleEdit}>Edit</span> : null}
+              {edit && <span onClick={toggleEdit}>Edit</span>}
             </th>
             <th>Name</th>
             <th className="text-center">Level</th>
