@@ -3,7 +3,7 @@ import { useState, useReducer } from "react";
 import { Button, Navbar, Form, Table, ButtonGroup } from "react-bootstrap";
 import { orderBy, sumBy, assign, pick, toSafeInteger } from "lodash";
 
-type Clear = "PUC" | "UC" | "EXC" | "CLEARED" | "PLAYED";
+type Clear = "PUC" | "UC" | "EXC" | "C" | "P";
 
 const STORAGE_KEY = "plays";
 
@@ -24,7 +24,7 @@ class Play {
     this.name = name ?? "";
     this.level = level ?? 20;
     this.score = score ?? 0;
-    this.clear = clear ?? "CLEARED";
+    this.clear = clear ?? "C";
   }
 
   toJSON() {
@@ -64,8 +64,8 @@ class Play {
       PUC: 1.1,
       UC: 1.05,
       EXC: 1.02,
-      CLEARED: 1.0,
-      PLAYED: 0.5,
+      C: 1.0,
+      P: 0.5,
     }[this.clear];
   }
 
@@ -105,9 +105,18 @@ class Play {
 }
 
 interface PlaysAction {
-  type: "add" | "change" | "delete" | "sort";
+  type: "add" | "change" | "delete" | "sort" | "replace";
   index?: number;
   play?: PlayData;
+  plays?: PlayData[];
+}
+
+function sortedPlays(plays: Play[]) {
+  return orderBy(
+    plays,
+    ["force", "level", "fracScore", (p: Play) => p.name?.toLowerCase() ?? ""],
+    ["desc", "desc", "desc", "asc"],
+  );
 }
 
 function playsReducer(plays: Play[], action: PlaysAction) {
@@ -135,17 +144,11 @@ function playsReducer(plays: Play[], action: PlaysAction) {
     }
 
     case "sort": {
-      return orderBy(
-        plays,
-        [
-          "force",
-          "level",
-          "fracScore",
-          (p: Play) => p.name?.toLowerCase() ?? "",
-        ],
-        ["desc", "desc", "desc", "asc"],
-      );
+      return sortedPlays(plays);
     }
+
+    case "replace":
+      return sortedPlays(action.plays!.map((p) => new Play(p)));
   }
 }
 
@@ -172,7 +175,7 @@ function App() {
     dispatch({ type: "sort" });
   }
 
-  const orderedPlays = orderBy(plays, ["force"], ["desc"]);
+  const orderedPlays = sortedPlays(plays);
   const totalForce = sumBy(orderedPlays.slice(0, 50), "force") / 1000;
 
   return (
@@ -185,7 +188,51 @@ function App() {
         <Navbar.Brand href="#">Volforce Calculator</Navbar.Brand>
         <Navbar.Brand href="#">{totalForce.toFixed(3)}</Navbar.Brand>
       </Navbar>
-      <Table size="sm">
+      <Table
+        size="sm"
+        onDrop={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+
+          if (event.dataTransfer.items) {
+            for (let i = 0; i < event.dataTransfer.items.length; ++i) {
+              const item = event.dataTransfer.items[i];
+              if (item.kind === "file") {
+                const file = item.getAsFile();
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = (event) => {
+                    const text = event.target?.result as string;
+                    if (text) {
+                      const rows = text.trim().split("\n");
+                      const plays = rows.slice(1).map((row) => {
+                        const cols = row.split(",");
+                        return {
+                          name: `${cols[0]} ${cols[1]}`,
+                          level: toSafeInteger(cols[2]),
+                          clear: {
+                            PERFECT: "PUC",
+                            "ULTIMATE CHAIN": "UC",
+                            "EXCESSIVE COMPLETE": "EXC",
+                            COMPLETE: "C",
+                            PLAYED: "P",
+                          }[cols[3]] as Clear,
+                          score: toSafeInteger(cols[5]),
+                        };
+                      });
+                      dispatch({ type: "replace", plays: plays });
+                    }
+                  };
+                  reader.readAsText(file);
+                }
+              }
+            }
+          }
+        }}
+        onDragOver={(event) => {
+          event.preventDefault();
+        }}
+      >
         <thead>
           <tr>
             <th className="text-center">
@@ -202,7 +249,7 @@ function App() {
             {edit ? (
               <th className="text-center">
                 <Button
-                  variant="info"
+                  variant="outline-info"
                   size="sm"
                   onClick={() => dispatch({ type: "sort" })}
                 >
@@ -213,8 +260,8 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {plays.map((play: Play, index: number) => (
-            <tr>
+          {plays.map((play, index) => (
+            <tr key={index}>
               <th></th>
               <td>
                 {edit ? (
@@ -301,8 +348,8 @@ function App() {
                     <option>PUC</option>
                     <option>UC</option>
                     <option>EXC</option>
-                    <option>CLEARED</option>
-                    <option>PLAYED</option>
+                    <option>C</option>
+                    <option>P</option>
                   </Form.Select>
                 ) : (
                   play.clear
@@ -314,7 +361,7 @@ function App() {
                 <td className="text-center">
                   <ButtonGroup>
                     <Button
-                      variant="success"
+                      variant="outline-success"
                       size="sm"
                       onClick={() =>
                         dispatch({
@@ -327,7 +374,7 @@ function App() {
                       +
                     </Button>
                     <Button
-                      variant="danger"
+                      variant="outline-danger"
                       size="sm"
                       onClick={() =>
                         dispatch({
