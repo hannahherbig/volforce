@@ -189,10 +189,9 @@ function App() {
         <thead>
           <tr>
             <th className="text-center">
-              <input type="checkbox" onChange={toggleEdit} checked={edit} />{" "}
-              <span v-if="edit" onClick={toggleEdit}>
-                Edit
-              </span>
+              <input type="checkbox" onChange={toggleEdit} checked={edit} />
+              {edit ? " " : ""}
+              {edit ? <span onClick={toggleEdit}>Edit</span> : null}
             </th>
             <th>Name</th>
             <th className="text-center">Level</th>
