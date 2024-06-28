@@ -17,7 +17,11 @@ export default function App() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        return parsed.map((p: Play) => new Play(p));
+        if (parsed.length) {
+          return parsed.map((p: Play) => new Play(p));
+        } else {
+          return initial;
+        }
       } else {
         return initial;
       }
