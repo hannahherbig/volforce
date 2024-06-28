@@ -9,8 +9,7 @@ import PlayRow from "./PlayRow";
 
 const STORAGE_KEY = "plays";
 
-function App() {
-  const [edit, setEdit] = useState(false);
+export default function App() {
   const [plays, dispatch] = useReducer(
     playsReducer,
     [new Play({ name: "Lachryma", level: 20, score: 989, clear: "EXC" })],
@@ -22,13 +21,8 @@ function App() {
       } else {
         return initial;
       }
-    },
+    }
   );
-
-  function toggleEdit() {
-    setEdit(!edit);
-    dispatch({ type: "sort" });
-  }
 
   const orderedPlays = sortedPlays(plays);
   const totalForce = sumBy(orderedPlays.slice(0, 50), "force") / 1000;
@@ -84,7 +78,6 @@ function App() {
         expand="lg"
         className="justify-content-between"
         bg="light"
-        onClick={toggleEdit}
       >
         <Container>
           <Navbar.Brand href="#">Volforce Calculator</Navbar.Brand>
@@ -101,28 +94,22 @@ function App() {
       >
         <thead className="thead-light">
           <tr>
-            <th className="text-center">
-              <input type="checkbox" onChange={toggleEdit} checked={edit} />
-              {edit ? " " : ""}
-              {edit && <span onClick={toggleEdit}>Edit</span>}
-            </th>
+            <th></th>
             <th>Name</th>
             <th className="text-center">Level</th>
             <th className="text-center">Score</th>
             <th className="text-center">Clear</th>
             <th className="text-center">Grade</th>
             <th className="text-center">VF</th>
-            {edit ? (
-              <th className="text-center">
-                <Button
-                  variant="outline-info"
-                  size="sm"
-                  onClick={() => dispatch({ type: "sort" })}
-                >
-                  Sort
-                </Button>
-              </th>
-            ) : null}
+            <th className="text-center">
+              <Button
+                variant="outline-info"
+                size="sm"
+                onClick={() => dispatch({ type: "sort" })}
+              >
+                Sort
+              </Button>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -132,7 +119,6 @@ function App() {
               play={play}
               index={index}
               position={orderedPlays.indexOf(play)}
-              edit={edit}
               dispatch={dispatch}
             />
           ))}
@@ -141,5 +127,3 @@ function App() {
     </>
   );
 }
-
-export default App;
