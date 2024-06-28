@@ -99,7 +99,7 @@ class Play {
 
   get force() {
     return Math.floor(
-      this.level * this.fracScore * this.gradeCoef * this.clearCoef * 20
+      this.level * this.fracScore * this.gradeCoef * this.clearCoef * 20,
     );
   }
 }
@@ -143,7 +143,7 @@ function playsReducer(plays: Play[], action: PlaysAction) {
           "fracScore",
           (p: Play) => p.name?.toLowerCase() ?? "",
         ],
-        ["desc", "desc", "desc", "asc"]
+        ["desc", "desc", "desc", "asc"],
       );
     }
   }
@@ -162,7 +162,7 @@ function App() {
       } else {
         return initial;
       }
-    }
+    },
   );
 
   console.log(plays);
