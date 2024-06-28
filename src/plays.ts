@@ -17,10 +17,10 @@ export class Play {
   score: number;
   clear: Clear;
 
-  constructor({ id, name, level, score, clear }: PlayData) {
+  constructor({ id, name, level, score, clear }: PlayData = {}) {
     this.id = id ?? crypto.randomUUID();
     this.name = name ?? "";
-    this.level = level ?? 20;
+    this.level = level ?? 17;
     this.score = score ?? 0;
     this.clear = clear ?? "C";
   }

@@ -22,7 +22,11 @@ export default function playsReducer(plays: Play[], action: PlaysAction) {
     }
 
     case "delete": {
-      return plays.filter((play, index) => index !== action.index);
+      if (action.index == 0 && plays.length == 1) {
+        return [new Play()];
+      } else {
+        return plays.filter((play, index) => index !== action.index);
+      }
     }
 
     case "sort": {

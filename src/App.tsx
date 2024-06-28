@@ -21,7 +21,7 @@ export default function App() {
       } else {
         return initial;
       }
-    }
+    },
   );
 
   const orderedPlays = sortedPlays(plays);
