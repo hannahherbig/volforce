@@ -1,6 +1,13 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState, useReducer } from "react";
-import { Button, Navbar, Form, Table, ButtonGroup } from "react-bootstrap";
+import React, { useState, useReducer, useEffect } from "react";
+import {
+  Button,
+  Navbar,
+  Form,
+  Table,
+  ButtonGroup,
+  Container,
+} from "react-bootstrap";
 import { orderBy, sumBy, assign, pick, toSafeInteger } from "lodash";
 
 type Clear = "PUC" | "UC" | "EXC" | "C" | "P";
@@ -114,7 +121,7 @@ interface PlaysAction {
 function sortedPlays(plays: Play[]) {
   return orderBy(
     plays,
-    ["force", "level", "fracScore", (p: Play) => p.name?.toLowerCase() ?? ""],
+    ["force", "level", "longScore", (p: Play) => p.name?.toLowerCase() ?? ""],
     ["desc", "desc", "desc", "asc"],
   );
 }
@@ -153,7 +160,7 @@ function playsReducer(plays: Play[], action: PlaysAction) {
 }
 
 function App() {
-  const [edit, setEdit] = useState(true);
+  const [edit, setEdit] = useState(false);
   const [plays, dispatch] = useReducer(
     playsReducer,
     [new Play({ name: "Lachryma", level: 20, score: 989, clear: "EXC" })],
@@ -178,18 +185,27 @@ function App() {
   const orderedPlays = sortedPlays(plays);
   const totalForce = sumBy(orderedPlays.slice(0, 50), "force") / 1000;
 
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(plays));
+  }, plays);
+
   return (
     <>
       <Navbar
+        variant="light"
         expand="lg"
         className="justify-content-between"
+        bg="light"
         onClick={toggleEdit}
       >
-        <Navbar.Brand href="#">Volforce Calculator</Navbar.Brand>
-        <Navbar.Brand href="#">{totalForce.toFixed(3)}</Navbar.Brand>
+        <Container>
+          <Navbar.Brand href="#">Volforce Calculator</Navbar.Brand>
+          <Navbar.Brand href="#">{totalForce.toFixed(3)}</Navbar.Brand>
+        </Container>
       </Navbar>
       <Table
         size="sm"
+        variant="light"
         onDrop={(event) => {
           event.stopPropagation();
           event.preventDefault();
@@ -233,7 +249,7 @@ function App() {
           event.preventDefault();
         }}
       >
-        <thead>
+        <thead className="thead-light">
           <tr>
             <th className="text-center">
               <input type="checkbox" onChange={toggleEdit} checked={edit} />
@@ -261,8 +277,13 @@ function App() {
         </thead>
         <tbody>
           {plays.map((play, index) => (
-            <tr key={index}>
-              <th></th>
+            <tr
+              key={index}
+              className={
+                orderedPlays.indexOf(play) >= 50 ? "table-secondary" : ""
+              }
+            >
+              <th className="text-end">{orderedPlays.indexOf(play) + 1}</th>
               <td>
                 {edit ? (
                   <Form.Control
