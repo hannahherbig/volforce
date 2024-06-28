@@ -187,7 +187,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(plays));
-  }, plays);
+  }, [plays]);
 
   return (
     <>

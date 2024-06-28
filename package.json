@@ -59,7 +59,7 @@
     "typescript-eslint": "^7.14.1"
   },
   "lint-staged": {
-    "*.{html,css,md}": "prettier --write",
+    "*.{html,css,md,yml}": "prettier --write",
     "*.{tsx,ts}": [
       "prettier --write",
       "eslint --fix"
