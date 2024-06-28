@@ -204,7 +204,7 @@ function App() {
                 <Button
                   variant="info"
                   size="sm"
-                  onClick={(e) => dispatch({ type: "sort" })}
+                  onClick={() => dispatch({ type: "sort" })}
                 >
                   Sort
                 </Button>
