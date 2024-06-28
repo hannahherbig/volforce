@@ -3,6 +3,7 @@ import { orderBy, pick } from "lodash";
 export type Clear = "PUC" | "UC" | "EXC" | "C" | "P";
 
 export interface PlayData {
+  id?: string;
   name?: string;
   level?: number;
   score?: number;
@@ -10,12 +11,14 @@ export interface PlayData {
 }
 
 export class Play {
+  id: string;
   name: string;
   level: number;
   score: number;
   clear: Clear;
 
-  constructor({ name, level, score, clear }: PlayData) {
+  constructor({ id, name, level, score, clear }: PlayData) {
+    this.id = id ?? crypto.randomUUID();
     this.name = name ?? "";
     this.level = level ?? 20;
     this.score = score ?? 0;

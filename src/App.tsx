@@ -128,7 +128,7 @@ function App() {
         <tbody>
           {plays.map((play, index) => (
             <PlayRow
-              key={index}
+              key={play.id}
               play={play}
               index={index}
               position={orderedPlays.indexOf(play)}
