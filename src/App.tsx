@@ -39,6 +39,46 @@ function App() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(plays));
   }, [plays]);
 
+  function handleDrop(event: React.DragEvent<HTMLTableElement>) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (event.dataTransfer.items) {
+      for (let i = 0; i < event.dataTransfer.items.length; ++i) {
+        const item = event.dataTransfer.items[i];
+        if (item.kind === "file") {
+          const file = item.getAsFile();
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const text = event.target?.result as string;
+              if (text) {
+                const rows = text.trim().split("\n");
+                const plays = rows.slice(1).map((row) => {
+                  const cols = row.split(",");
+                  return {
+                    name: `${cols[0]} ${cols[1]}`,
+                    level: toSafeInteger(cols[2]),
+                    clear: {
+                      PERFECT: "PUC",
+                      "ULTIMATE CHAIN": "UC",
+                      "EXCESSIVE COMPLETE": "EXC",
+                      COMPLETE: "C",
+                      PLAYED: "P",
+                    }[cols[3]] as Clear,
+                    score: toSafeInteger(cols[5]),
+                  };
+                });
+                dispatch({ type: "replace", plays: plays });
+              }
+            };
+            reader.readAsText(file);
+          }
+        }
+      }
+    }
+  }
+
   return (
     <>
       <Navbar
@@ -56,45 +96,7 @@ function App() {
       <Table
         size="sm"
         variant="light"
-        onDrop={(event) => {
-          event.stopPropagation();
-          event.preventDefault();
-
-          if (event.dataTransfer.items) {
-            for (let i = 0; i < event.dataTransfer.items.length; ++i) {
-              const item = event.dataTransfer.items[i];
-              if (item.kind === "file") {
-                const file = item.getAsFile();
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onload = (event) => {
-                    const text = event.target?.result as string;
-                    if (text) {
-                      const rows = text.trim().split("\n");
-                      const plays = rows.slice(1).map((row) => {
-                        const cols = row.split(",");
-                        return {
-                          name: `${cols[0]} ${cols[1]}`,
-                          level: toSafeInteger(cols[2]),
-                          clear: {
-                            PERFECT: "PUC",
-                            "ULTIMATE CHAIN": "UC",
-                            "EXCESSIVE COMPLETE": "EXC",
-                            COMPLETE: "C",
-                            PLAYED: "P",
-                          }[cols[3]] as Clear,
-                          score: toSafeInteger(cols[5]),
-                        };
-                      });
-                      dispatch({ type: "replace", plays: plays });
-                    }
-                  };
-                  reader.readAsText(file);
-                }
-              }
-            }
-          }
-        }}
+        onDrop={handleDrop}
         onDragOver={(event) => {
           event.preventDefault();
         }}
