@@ -1,16 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useReducer, useEffect } from "react";
-import {
-  Button,
-  Navbar,
-  Form,
-  Table,
-  ButtonGroup,
-  Container,
-} from "react-bootstrap";
+import { Button, Navbar, Table, Container } from "react-bootstrap";
 import { sumBy, toSafeInteger } from "lodash";
 
-import { Clear, PlayData, Play, PlaysAction, sortedPlays } from "./plays";
+import { Clear, Play, sortedPlays } from "./plays";
 import playsReducer from "./playsReducer";
 import PlayRow from "./PlayRow";
 
