@@ -1,5 +1,6 @@
 {
   "name": "volforce",
+  "description": "SDVX Volforce Calculator",
   "version": "0.1.0",
   "homepage": "https://hannahherbig.github.io/volforce/",
   "private": true,

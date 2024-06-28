@@ -1,6 +1,6 @@
 # SDVX Volforce Calculator
 
-This is a site to calculate your [Volforce rating](https://bemaniwiki.com/index.php?SOUND+VOLTEX+EXCEED+GEAR/VOLFORCE) in the same way Sound Voltex does. It's useful to keep track of your scores from different game servers (eAmuse and private servers).
+This is a site to calculate your [Volforce rating](https://bemaniwiki.com/index.php?SOUND+VOLTEX+EXCEED+GEAR/VOLFORCE) in the same way SDVX does. It's useful to keep track of your scores from different game servers (eAmuse and private servers).
 
 You can drag a csv exported from the eAmuse website onto the table and it will import it.
 
