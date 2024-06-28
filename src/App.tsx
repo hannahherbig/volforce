@@ -309,7 +309,7 @@ function App() {
                 )}
               </td>
               <td className="text-center">{play.grade}</td>
-              <td className="text-center">{play.force.toFixed(0)}</td>
+              <td className="text-center">{play.force}</td>
               {edit ? (
                 <td className="text-center">
                   <ButtonGroup>
