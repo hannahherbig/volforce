@@ -25,8 +25,6 @@ function App() {
     },
   );
 
-  console.log(plays);
-
   function toggleEdit() {
     setEdit(!edit);
     dispatch({ type: "sort" });
