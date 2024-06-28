@@ -98,7 +98,9 @@ class Play {
   }
 
   get force() {
-    return this.level * this.fracScore * this.gradeCoef * this.clearCoef * 20;
+    return Math.floor(
+      this.level * this.fracScore * this.gradeCoef * this.clearCoef * 20
+    );
   }
 }
 
@@ -112,9 +114,9 @@ function playsReducer(plays: Play[], action: PlaysAction) {
   switch (action.type) {
     case "add": {
       return [
-        ...plays.slice(0, action.index),
+        ...plays.slice(0, action.index! + 1),
         new Play(action.play!),
-        ...plays.slice(action.index),
+        ...plays.slice(action.index! + 1),
       ];
     }
 
@@ -167,6 +169,7 @@ function App() {
 
   function toggleEdit() {
     setEdit(!edit);
+    dispatch({ type: "sort" });
   }
 
   const orderedPlays = orderBy(plays, ["force"], ["desc"]);
@@ -185,7 +188,7 @@ function App() {
       <Table size="sm">
         <thead>
           <tr>
-            <th className="text-end">
+            <th className="text-center">
               <input type="checkbox" onChange={toggleEdit} checked={edit} />{" "}
               <span v-if="edit" onClick={toggleEdit}>
                 Edit
@@ -285,7 +288,7 @@ function App() {
                 {edit ? (
                   <Form.Select
                     size="sm"
-                    value={play.score}
+                    value={play.clear}
                     onChange={(e) => {
                       dispatch({
                         type: "change",
