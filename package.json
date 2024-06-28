@@ -54,6 +54,6 @@
     "prettier": "^3.3.2"
   },
   "lint-staged": {
-    "!(package-lock.json)": "prettier --write"
+    "*.{html,css,tsx,ts,md}": "prettier --write"
   }
 }
