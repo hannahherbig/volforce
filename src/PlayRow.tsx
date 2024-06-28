@@ -181,8 +181,8 @@ export default function PlayRow({
       <EditableScore play={play} index={index} dispatch={dispatch} />
       <EditableClear play={play} index={index} dispatch={dispatch} />
 
-      <td className="text-center">{play.grade}</td>
-      <td className="text-center">{play.force}</td>
+      <th className="text-center">{play.grade}</th>
+      <th className="text-center">{play.force}</th>
       <td className="text-center">
         <ButtonGroup>
           <Button
