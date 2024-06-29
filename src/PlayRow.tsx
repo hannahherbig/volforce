@@ -1,7 +1,7 @@
-import { Button, ButtonGroup, Form } from "react-bootstrap";
-import { Clear, Play, PlaysAction } from "./plays";
-import { toSafeInteger } from "lodash";
 import React, { useState } from "react";
+import { Button, ButtonGroup, Form } from "react-bootstrap";
+import { toSafeInteger } from "lodash";
+import { Clear, Play, PlaysAction } from "./plays";
 
 function EditableName({
   play,

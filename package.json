@@ -29,7 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "eslintConfig": {
     "extends": [
@@ -60,8 +60,8 @@
     "typescript-eslint": "^7.14.1"
   },
   "lint-staged": {
-    "*.{html,css,md,yml}": "prettier --write",
-    "*.{tsx,ts}": [
+    "*.{html,css,md,yml,json}": "prettier --write",
+    "*.{tsx,ts,mjs}": [
       "prettier --write",
       "eslint --fix"
     ]
