@@ -1,4 +1,5 @@
 import { orderBy, pick } from "lodash";
+import { v4 as uuidv4 } from "uuid";
 
 export type Clear = "PUC" | "UC" | "EXC" | "C" | "P";
 
@@ -18,7 +19,7 @@ export class Play {
   clear: Clear;
 
   constructor({ id, name, level, score, clear }: PlayData = {}) {
-    this.id = id ?? crypto.randomUUID();
+    this.id = id ?? uuidv4();
     this.name = name ?? "";
     this.level = level ?? 17;
     this.score = score ?? 0;

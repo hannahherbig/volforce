@@ -6,16 +6,19 @@ import { Clear, Play, PlaysAction } from "./plays";
 function EditableName({
   play,
   index,
+  // position,
   dispatch,
 }: {
   play: Play;
   index: number;
+  // position: number;
   dispatch: React.Dispatch<PlaysAction>;
 }) {
   const [editing, setEditing] = useState(false);
 
   return (
     <td onClick={() => setEditing(true)}>
+      {/* <strong>{position + 1}.</strong>&nbsp; */}
       {editing ? (
         <Form.Control
           type="text"
@@ -93,7 +96,7 @@ function EditableScore({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td className="text-center" onClick={() => setEditing(true)}>
+    <td className="text-center font-monospace" onClick={() => setEditing(true)}>
       {editing ? (
         <Form.Control
           type="number"
@@ -114,7 +117,7 @@ function EditableScore({
           onBlur={() => setEditing(false)}
         />
       ) : (
-        play.longScore.toLocaleString()
+        play.longScore
       )}
     </td>
   );
@@ -175,15 +178,7 @@ export default function PlayRow({
 }) {
   return (
     <tr key={index} className={position >= 50 ? "table-secondary" : ""}>
-      <th className="text-end">{position + 1}</th>
-      <EditableName play={play} index={index} dispatch={dispatch} />
-      <EditableLevel play={play} index={index} dispatch={dispatch} />
-      <EditableScore play={play} index={index} dispatch={dispatch} />
-      <EditableClear play={play} index={index} dispatch={dispatch} />
-
-      <th className="text-center">{play.grade}</th>
-      <th className="text-center">{play.force}</th>
-      <td className="text-center">
+      <th className="text-center">
         <ButtonGroup>
           <Button
             variant="outline-success"
@@ -211,7 +206,19 @@ export default function PlayRow({
             X
           </Button>
         </ButtonGroup>
-      </td>
+      </th>
+      <EditableName
+        play={play}
+        index={index}
+        // position={position}
+        dispatch={dispatch}
+      />
+      <EditableLevel play={play} index={index} dispatch={dispatch} />
+      <EditableScore play={play} index={index} dispatch={dispatch} />
+      <EditableClear play={play} index={index} dispatch={dispatch} />
+
+      <th className="text-center">{play.grade}</th>
+      <th className="text-center">{play.force}</th>
     </tr>
   );
 }

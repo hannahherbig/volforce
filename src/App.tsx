@@ -85,8 +85,12 @@ export default function App() {
         bg="light"
       >
         <Container>
-          <Navbar.Brand href="#">Volforce Calculator</Navbar.Brand>
-          <Navbar.Brand href="#">{totalForce.toFixed(3)}</Navbar.Brand>
+          <Navbar.Brand href="#" className="h1">
+            Volforce Calculator
+          </Navbar.Brand>
+          <Navbar.Brand href="#" className="h1">
+            {totalForce.toFixed(3)}
+          </Navbar.Brand>
         </Container>
       </Navbar>
       <Table
@@ -99,13 +103,6 @@ export default function App() {
       >
         <thead className="thead-light">
           <tr>
-            <th></th>
-            <th>Name</th>
-            <th className="text-center">Level</th>
-            <th className="text-center">Score</th>
-            <th className="text-center">Clear</th>
-            <th className="text-center">Grade</th>
-            <th className="text-center">VF</th>
             <th className="text-center">
               <Button
                 variant="outline-info"
@@ -115,6 +112,12 @@ export default function App() {
                 Sort
               </Button>
             </th>
+            <th>Name</th>
+            <th className="text-center">Level</th>
+            <th className="text-center">Score</th>
+            <th className="text-center">Clear</th>
+            <th className="text-center">Grade</th>
+            <th className="text-center">VF</th>
           </tr>
         </thead>
         <tbody>
