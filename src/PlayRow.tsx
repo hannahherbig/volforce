@@ -16,7 +16,10 @@ function EditableName({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td onMouseEnter={() => setEditing(true)}>
+    <td
+      onMouseEnter={() => setEditing(true)}
+      onMouseLeave={() => setEditing(false)}
+    >
       {editing ? (
         <Form.Control
           type="text"
@@ -54,7 +57,11 @@ function EditableLevel({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td className="text-center" onMouseEnter={() => setEditing(true)}>
+    <td
+      className="text-center"
+      onMouseEnter={() => setEditing(true)}
+      onMouseLeave={() => setEditing(false)}
+    >
       {editing ? (
         <Form.Control
           type="number"
@@ -96,7 +103,11 @@ function EditableScore({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td className="text-center" onMouseEnter={() => setEditing(true)}>
+    <td
+      className="text-center"
+      onMouseEnter={() => setEditing(true)}
+      onMouseLeave={() => setEditing(false)}
+    >
       {editing ? (
         <Form.Control
           type="number"
@@ -137,7 +148,11 @@ function EditableClear({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td className="text-center" onMouseEnter={() => setEditing(true)}>
+    <td
+      className="text-center"
+      onMouseEnter={() => setEditing(true)}
+      onMouseLeave={() => setEditing(false)}
+    >
       {editing ? (
         <Form.Select
           size="sm"

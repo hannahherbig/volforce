@@ -68,8 +68,21 @@ export default function App() {
                 const rows = text.trim().split("\n");
                 const plays = rows.slice(1).map((row) => {
                   const cols = row.split(",");
+                  const songName = cols[0];
+                  const difficultyName = cols[1];
+                  const shortDiff =
+                    {
+                      EXCEED: "XCD",
+                      VIVID: "VVD",
+                      MAXIMUM: "MXM",
+                      GRAVITY: "GRV",
+                      INFINITE: "INF",
+                      EXHAUST: "EXH",
+                      ADVANCED: "ADV",
+                      NOVICE: "NOV",
+                    }[difficultyName] ?? difficultyName;
                   return {
-                    name: `${cols[0]} ${cols[1]}`,
+                    name: `${songName} ${shortDiff}`,
                     level: toSafeInteger(cols[2]),
                     clear: {
                       PERFECT: "PUC",
