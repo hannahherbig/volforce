@@ -28,7 +28,7 @@ export default function App() {
       } else {
         return initial;
       }
-    }
+    },
   );
 
   const [isDesktop, setIsDesktop] = useState(isDesktopQuery.matches);
@@ -145,7 +145,6 @@ export default function App() {
               play={play}
               index={index}
               position={orderedPlays.indexOf(play)}
-              showButtons={showButtons}
               isDesktop={isDesktop}
               dispatch={dispatch}
             />

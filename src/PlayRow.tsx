@@ -16,7 +16,7 @@ function EditableName({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td onClick={() => setEditing(true)}>
+    <td onMouseEnter={() => setEditing(true)}>
       {editing ? (
         <Form.Control
           type="text"
@@ -54,7 +54,7 @@ function EditableLevel({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td className="text-center" onClick={() => setEditing(true)}>
+    <td className="text-center" onMouseEnter={() => setEditing(true)}>
       {editing ? (
         <Form.Control
           type="number"
@@ -96,7 +96,7 @@ function EditableScore({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td className="text-center" onClick={() => setEditing(true)}>
+    <td className="text-center" onMouseEnter={() => setEditing(true)}>
       {editing ? (
         <Form.Control
           type="number"
@@ -137,7 +137,7 @@ function EditableClear({
   const [editing, setEditing] = useState(false);
 
   return (
-    <td className="text-center" onClick={() => setEditing(true)}>
+    <td className="text-center" onMouseEnter={() => setEditing(true)}>
       {editing ? (
         <Form.Select
           size="sm"
@@ -171,25 +171,28 @@ export default function PlayRow({
   play,
   index,
   position,
-  showButtons,
   isDesktop,
   dispatch,
 }: {
   play: Play;
   index: number;
   position: number;
-  showButtons: boolean;
   isDesktop: boolean;
   dispatch: React.Dispatch<PlaysAction>;
 }) {
+  const [editing, setEditing] = useState(false);
   const rowClass = classNames({
     "table-secondary": position > 50,
     "font-monospace": true,
   });
   return (
     <tr key={index} className={rowClass}>
-      <th className="text-center">
-        {showButtons ? (
+      <th
+        className="text-center"
+        onMouseEnter={() => setEditing(true)}
+        onMouseLeave={() => setEditing(false)}
+      >
+        {editing ? (
           <ButtonGroup>
             <Button
               variant="outline-success"
