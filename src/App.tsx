@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { Button, Navbar, Table, Container } from "react-bootstrap";
 import { sumBy, toSafeInteger } from "lodash";
 
@@ -8,9 +8,11 @@ import { Clear, Play, sortedPlays } from "./plays";
 import playsReducer from "./playsReducer";
 import PlayRow from "./PlayRow";
 
+const isDesktopQuery = window.matchMedia("(min-width: 768px)");
 const STORAGE_KEY = "plays";
 
 export default function App() {
+  const [showButtons, setShowButtons] = useState(true);
   const [plays, dispatch] = useReducer(
     playsReducer,
     [new Play({ name: "Lachryma", level: 20, score: 989, clear: "EXC" })],
@@ -26,8 +28,21 @@ export default function App() {
       } else {
         return initial;
       }
-    },
+    }
   );
+
+  const [isDesktop, setIsDesktop] = useState(isDesktopQuery.matches);
+
+  useEffect(() => {
+    function updateIsDesktop(e: MediaQueryListEvent) {
+      setIsDesktop(e.matches);
+    }
+    isDesktopQuery.addEventListener("change", updateIsDesktop);
+
+    return () => {
+      isDesktopQuery.removeEventListener("change", updateIsDesktop);
+    };
+  });
 
   const orderedPlays = sortedPlays(plays);
   const totalForce = sumBy(orderedPlays.slice(0, 50), "force") / 1000;
@@ -83,6 +98,7 @@ export default function App() {
         expand="lg"
         className="justify-content-between"
         bg="light"
+        onClick={() => setShowButtons(!showButtons)}
       >
         <Container>
           <Navbar.Brand href="#" className="h1">
@@ -104,19 +120,21 @@ export default function App() {
         <thead className="thead-light">
           <tr>
             <th className="text-center">
-              <Button
-                variant="outline-info"
-                size="sm"
-                onClick={() => dispatch({ type: "sort" })}
-              >
-                Sort
-              </Button>
+              {showButtons && (
+                <Button
+                  variant="outline-info"
+                  size="sm"
+                  onClick={() => dispatch({ type: "sort" })}
+                >
+                  Sort
+                </Button>
+              )}
             </th>
             <th>Name</th>
             <th className="text-center">Level</th>
             <th className="text-center">Score</th>
             <th className="text-center">Clear</th>
-            <th className="text-center">Grade</th>
+            {isDesktop && <th className="text-center">Grade</th>}
             <th className="text-center">VF</th>
           </tr>
         </thead>
@@ -127,6 +145,8 @@ export default function App() {
               play={play}
               index={index}
               position={orderedPlays.indexOf(play)}
+              showButtons={showButtons}
+              isDesktop={isDesktop}
               dispatch={dispatch}
             />
           ))}
